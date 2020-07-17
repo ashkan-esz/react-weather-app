@@ -1,203 +1,102 @@
-import Head from 'next/head'
+import React, {useState} from "react";
+import {css} from "@emotion/core";
+import AppTitle from "../components/AppTitle";
+import Result from "../components/Result";
+import NotFound from "../components/NotFound";
+import SearchCity from "../components/SearchCity";
 
-const Home = () => (
-  <div className="container">
-    <Head>
-      <title>Create Next App</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+const axios = require("axios").default;
 
-    <main>
-      <h1 className="title">
-        Welcome to <a href="https://nextjs.org">Next.js!</a>
-      </h1>
 
-      <p className="description">
-        Get started by editing <code>pages/index.js</code>
-      </p>
+const Home = () => {
+    const [value,setValue] = useState('');
+    const [weatherInfo,setWeatherInfo] = useState(null);
+    const [error,setError] = useState(false);
 
-      <div className="grid">
-        <a href="https://nextjs.org/docs" className="card">
-          <h3>Documentation &rarr;</h3>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+    const handleInputChange = e => {
+        setValue(e.target.value);
+    };
 
-        <a href="https://nextjs.org/learn" className="card">
-          <h3>Learn &rarr;</h3>
-          <p>Learn about Next.js in an interactive course with quizzes!</p>
-        </a>
+    const handleSearchCity = e => {
+        e.preventDefault();
+        axios.get(`./api/weather_api/${value}`).then(response => {
+            const weather_data = response.data[0];
+            const forecast_data = response.data[1];
 
-        <a
-          href="https://github.com/zeit/next.js/tree/master/examples"
-          className="card"
-        >
-          <h3>Examples &rarr;</h3>
-          <p>Discover and deploy boilerplate example Next.js projects.</p>
-        </a>
+            const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'Nocvember', 'December',
+            ];
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const currentDate = new Date();
+            const date = `${days[currentDate.getDay()]} ${currentDate.getDate()} ${months[currentDate.getMonth()]}`;
+            const sunset = new Date(weather_data.sys.sunset * 1000).toLocaleTimeString().slice(0, 4);
+            const sunrise = new Date(weather_data.sys.sunrise * 1000).toLocaleTimeString().slice(0, 4);
 
-        <a
-          href="https://zeit.co/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          className="card"
-        >
-          <h3>Deploy &rarr;</h3>
-          <p>
-            Instantly deploy your Next.js site to a public URL with ZEIT Now.
-          </p>
-        </a>
-      </div>
-    </main>
+            const weatherInfo = {
+                city: weather_data.name,
+                country: weather_data.sys.country,
+                date,
+                description: weather_data.weather[0].description,
+                main: weather_data.weather[0].main,
+                temp: weather_data.main.temp,
+                highestTemp: weather_data.main.temp_max,
+                lowestTemp: weather_data.main.temp_min,
+                sunrise,
+                sunset,
+                clouds: weather_data.clouds.all,
+                humidity: weather_data.main.humidity,
+                wind: weather_data.wind.speed,
+                forecast: forecast_data.list,
+            };
+            setWeatherInfo(weatherInfo);
+            setError(false);
+        }).catch((error) => {
+            // console.log(error);
+            setWeatherInfo(null);
+            setError(true);
+        });
+    };
 
-    <footer>
-      <a
-        href="https://zeit.co?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by <img src="/zeit.svg" alt="ZEIT Logo" />
-      </a>
-    </footer>
 
-    <style jsx>{`
-      .container {
-        min-height: 100vh;
-        padding: 0 0.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+    return (
+        <div css={style}>
+            <AppTitle
+                showLabel={ (weatherInfo || error) && true}>
+                Weather app
+            </AppTitle>
 
-      main {
-        padding: 5rem 0;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+            <div className={'search-city'}>
+                <AppTitle
+                    secondary
+                    hide={((weatherInfo || error) && true)}>
+                    Weather app
+                </AppTitle>
 
-      footer {
-        width: 100%;
-        height: 100px;
-        border-top: 1px solid #eaeaea;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+                <SearchCity
+                  value={value}
+                  showResult={((weatherInfo || error) && true)}
+                  change={handleInputChange}
+                  submit={handleSearchCity}
+                />
 
-      footer img {
-        margin-left: 0.5rem;
-      }
+                {weatherInfo && <Result weather={weatherInfo} />}
+                {error && <NotFound error={error} />}
+            </div>
+        </div>
+    )
+}
 
-      footer a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+const style = css`
 
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
+.search-city{
+  max-width: 1500px;
+  margin: 0 auto;
+  height: calc(100vh - 64px);
+  width: 100%;
+  position: relative;
+}
 
-      .title a {
-        color: #0070f3;
-        text-decoration: none;
-      }
+`;
 
-      .title a:hover,
-      .title a:focus,
-      .title a:active {
-        text-decoration: underline;
-      }
+export default Home;
 
-      .title {
-        margin: 0;
-        line-height: 1.15;
-        font-size: 4rem;
-      }
-
-      .title,
-      .description {
-        text-align: center;
-      }
-
-      .description {
-        line-height: 1.5;
-        font-size: 1.5rem;
-      }
-
-      code {
-        background: #fafafa;
-        border-radius: 5px;
-        padding: 0.75rem;
-        font-size: 1.1rem;
-        font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-          DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-      }
-
-      .grid {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
-
-        max-width: 800px;
-        margin-top: 3rem;
-      }
-
-      .card {
-        margin: 1rem;
-        flex-basis: 45%;
-        padding: 1.5rem;
-        text-align: left;
-        color: inherit;
-        text-decoration: none;
-        border: 1px solid #eaeaea;
-        border-radius: 10px;
-        transition: color 0.15s ease, border-color 0.15s ease;
-      }
-
-      .card:hover,
-      .card:focus,
-      .card:active {
-        color: #0070f3;
-        border-color: #0070f3;
-      }
-
-      .card h3 {
-        margin: 0 0 1rem 0;
-        font-size: 1.5rem;
-      }
-
-      .card p {
-        margin: 0;
-        font-size: 1.25rem;
-        line-height: 1.5;
-      }
-
-      @media (max-width: 600px) {
-        .grid {
-          width: 100%;
-          flex-direction: column;
-        }
-      }
-    `}</style>
-
-    <style jsx global>{`
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-    `}</style>
-  </div>
-)
-
-export default Home
