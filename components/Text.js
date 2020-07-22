@@ -20,7 +20,7 @@ const style = ({color, fontSize, align, firstToUpperCase})=> css`
   &:first-letter {
     text-transform: uppercase;
   }
-  `}
+  `};
   @media ${device.tablet} {
     font-size: ${ fontSize || '15px'};
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {css} from "@emotion/core";
 import device from "./Device";
+
 const AppTitle = (props) => {
     return (
         <h1 css={AppTitleStyle(props)}>
@@ -9,28 +10,33 @@ const AppTitle = (props) => {
     );
 };
 
-const AppTitleStyle = ({showLabel, secondary,hide}) => css`
+const AppTitleStyle = ({show, title,hide}) => css`
   display: block;
+  position: relative;
   height: 64px;
   margin: 0;
   padding: 18px 5px;
-  position: relative;
-  font-size: 20px;
   text-transform: uppercase;
+  font-size: 20px;
   font-weight: 400;
   color: #ffffff;
   transition: 0.3s 1.4s;
-  opacity: ${showLabel ? 1 : 0} ;
-
-    ${secondary && css`  
-      opacity: 1;
+  opacity: ${ (show || title) ? 1 : 0} ;
+  visibility: ${hide ? 'hidden' : 'visible'};
+  
+    ${title && css`  
       height: auto;
       padding: 20px 0;
       top: 19vh;
       text-align: center;
       transition: .5s;
-      //font-size: 60px;//todo : need change
       
+    @media ${device.mobileS} {
+      font-size: 27px;
+    }
+    @media ${device.mobileM} {
+      font-size: 34px;
+    }
     @media ${device.tablet} {
       font-size: 40px;
     }
@@ -45,14 +51,6 @@ const AppTitleStyle = ({showLabel, secondary,hide}) => css`
     }
     `}
 
-    ${hide && css`
-      opacity: 0;
-      visibility: hidden;
-      top: 10vh;
-    `}
-
 `;
 
 export default AppTitle;
-
-

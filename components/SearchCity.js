@@ -7,19 +7,16 @@ import device from './Device';
 
 const SearchCity = ({value, showResult, change, submit}) => {
     return (
-        <>
-            <form css={style(showResult)}
-                  onSubmit={submit}>
-                <input className={'search-input'}
-                       type="text"
-                       value={value}
-                       placeholder="Enter city"
-                       onChange={change}/>
-                <div className={'search-icon'}>
-                    <FontAwesomeIcon icon={faSearch}/>
-                </div>
-            </form>
-        </>
+        <form css={style(showResult)} onSubmit={submit}>
+            <input className={'search-input'}
+                   type="text"
+                   placeholder="Enter city"
+                   value={value}
+                   onChange={change}/>
+            <div className={'search-icon'}>
+                <FontAwesomeIcon icon={faSearch}/>
+            </div>
+        </form>
     );
 };
 
@@ -40,13 +37,13 @@ const style = (showResult) => css`
 .search-input{
   width: 100%;
   height: 6vh;
-  border: none;
-  background-color: #ffffff;
-  font-size: 16px;
   padding: 10px 15px 10px 40px;
+  font-size: 16px;
+  background-color: #ffffff;
   color: #c5c5c5;
   transition: 0.2s;
   border-radius: 20px;
+  border: none;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   &:focus {
     color: #191919;

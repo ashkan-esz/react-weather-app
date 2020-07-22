@@ -40,15 +40,17 @@ const Result = ({ weather }) => {
 
     return (
         <div css={style}>
+
             <div className={'location-wrapper'}>
                 <BigLabel>
                     {city}, {country}
                 </BigLabel>
                 <SmallLabel weight="400">{date}</SmallLabel>
             </div>
+
             <div className={'current-weather-wrapper'}>
 
-                    <WeatherIcon main={main}/>
+                <WeatherIcon main={main}/>
 
                 <div>
                     <h3 className={'temperature'}>{Math.floor(temp)}&#176;</h3>
@@ -57,6 +59,7 @@ const Result = ({ weather }) => {
                     </SmallLabel>
                 </div>
             </div>
+
             <div className={'weather-details-wrapper'}>
                 <div className={'weather-detail'}>
                     <SmallLabel align="center" weight="400">

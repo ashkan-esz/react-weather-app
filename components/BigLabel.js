@@ -1,6 +1,6 @@
 import React from 'react';
-import {css} from "@emotion/core";
 import device from "./Device";
+import {css} from "@emotion/core";
 
 const BigLabel = (props) => {
     return (
@@ -22,7 +22,7 @@ const style = ({color,weight,fontSize,align,firstToUpperCase})=> css`
   &:first-letter {
     text-transform: uppercase;
   }
-  `}
+  `};
   @media ${device.tablet} {
     font-size: ${ fontSize || '37px'};
   }

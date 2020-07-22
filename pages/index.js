@@ -59,15 +59,15 @@ const Home = () => {
 
 
     return (
-        <div css={style}>
+        <div>
             <AppTitle
-                showLabel={ (weatherInfo || error) && true}>
+                show={ (weatherInfo || error) && true}>
                 Weather app
             </AppTitle>
 
-            <div className={'search-city'}>
+            <div css={style}>
                 <AppTitle
-                    secondary
+                    title
                     hide={((weatherInfo || error) && true)}>
                     Weather app
                 </AppTitle>
@@ -87,15 +87,11 @@ const Home = () => {
 }
 
 const style = css`
-
-.search-city{
   max-width: 1500px;
   margin: 0 auto;
   height: calc(100vh - 64px);
   width: 100%;
   position: relative;
-}
-
 `;
 
 export default Home;

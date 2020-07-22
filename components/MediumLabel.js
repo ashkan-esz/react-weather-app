@@ -17,11 +17,12 @@ const style = ({color, weight, fontSize, align, firstToUpperCase})=> css`
   font-size: ${fontSize || '20px'};
   text-align: ${ align || 'left'};
   padding: 5px 0;
+  
   ${firstToUpperCase && css`
   &:first-letter {
     text-transform: uppercase;
   }
-  `}
+  `};
   @media ${device.tablet} {
     font-size: ${ fontSize || '23px'};
   }

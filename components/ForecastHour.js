@@ -10,10 +10,8 @@ const ForecastHour = (props) => {
     const iconUrl = `https://openweathermap.org/img/w/${icon}.png`;
     return (
         <div css={style}>
-            <Text align="center">
-                {month}.{day}
-            </Text>
-            <Text align="center">{hour}:00</Text>
+            <Text align="center"> {month}.{day} </Text>
+            <Text align="center"> {hour}:00 </Text>
             <img className={'weather-icon'} src={iconUrl} alt={'weather-icon'}/>
             <SmallLabel align="center" weight="400">
                 {temp}&#176;
@@ -21,7 +19,6 @@ const ForecastHour = (props) => {
         </div>
     );
 };
-
 
 const style = css`
   flex-shrink: 0;

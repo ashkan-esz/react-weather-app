@@ -42,15 +42,15 @@ const style = css`
 
   .not-found-icon{
     display: block;
-  text-align: center;
-  color: #ffffff;
-  font-size: 40px;
-  margin-right: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 40px;
+    margin-right: 10px;
   }
   
   .not-found-text{
-    color: #ffffff;
-  font-size: 17px;
+    color: #1c7373;
+    font-size: 17px;
   }
 `;
 

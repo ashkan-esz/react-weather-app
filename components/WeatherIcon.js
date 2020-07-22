@@ -43,6 +43,7 @@ const style = css`
   align-items: center;
   font-size: 70px;
   color: #ffffff;
+  
   @media ${device.tablet} {
     font-size: 100px;
     justify-content: flex-end;
