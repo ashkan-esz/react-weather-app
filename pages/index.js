@@ -13,8 +13,12 @@ const Home = () => {
     const [weatherInfo,setWeatherInfo] = useState(null);
     const [error,setError] = useState(false);
 
-    const handleInputChange = e => {
-        setValue(e.target.value);
+    const handleInputChange = input => {
+        setValue(input);
+        if (input === '') {
+            setWeatherInfo(null);
+            setError(false);
+        }
     };
 
     const handleSearchCity = e => {
@@ -50,7 +54,7 @@ const Home = () => {
             };
             setWeatherInfo(weatherInfo);
             setError(false);
-        }).catch((error) => {
+        }).catch(() => {
             // console.log(error);
             setWeatherInfo(null);
             setError(true);
@@ -73,7 +77,6 @@ const Home = () => {
                 </AppTitle>
 
                 <SearchCity
-                  value={value}
                   showResult={((weatherInfo || error) && true)}
                   change={handleInputChange}
                   submit={handleSearchCity}

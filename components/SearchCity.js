@@ -4,21 +4,33 @@ import {css} from "@emotion/core";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import device from './Device';
+import AlgoliaPlaces from 'algolia-places-react';
 
-const SearchCity = ({value, showResult, change, submit}) => {
+const SearchCity = ({showResult, change, submit}) => {
     return (
         <form css={style(showResult)} onSubmit={submit}>
-            <input className={'search-input'}
-                   type="text"
-                   placeholder="Enter city"
-                   value={value}
-                   onChange={change}/>
+
+            <AlgoliaPlaces
+                className={'search-input'}
+                placeholder='Enter city'
+                onChange={({query}) => change(query)}
+                onClear={() => change('')}
+                options={{
+                    appId: process.env.ALGOLIA_PLACES_APP_ID,
+                    apiKey: process.env.ALGOLIA_PLACES_API_KEY,
+                    language: 'en',
+                    type: 'city',
+                }}
+            />
+
             <div className={'search-icon'}>
                 <FontAwesomeIcon icon={faSearch}/>
             </div>
+
         </form>
     );
 };
+
 
 const style = (showResult) => css`
 
@@ -83,7 +95,6 @@ const style = (showResult) => css`
 `;
 
 SearchCity.propTypes = {
-    value: PropTypes.string.isRequired,
     showResult: PropTypes.bool.isRequired,
     change: PropTypes.func.isRequired,
     submit: PropTypes.func.isRequired,
