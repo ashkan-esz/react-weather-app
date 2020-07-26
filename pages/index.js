@@ -21,11 +21,21 @@ const Home = () => {
         }
     };
 
+
     const handleSearchCity = e => {
         e.preventDefault();
-        axios.get(`./api/weather_api/${value}`).then(response => {
-            const weather_data = response.data[0];
-            const forecast_data = response.data[1];
+
+        const api_key = process.env.OPEN_WEATHER_MAP_API;
+        const weather = `https://api.openweathermap.org/data/2.5/weather?q=${value}&APPID=${api_key}&units=metric`;
+        const forecast = `https://api.openweathermap.org/data/2.5/forecast?q=${value}&APPID=${api_key}&units=metric`;
+
+        Promise.all([axios.get(weather), axios.get(forecast)])
+            .then(([res1, res2]) => {
+                if (res1.status === 200 && res2.status === 200) {
+                    return Promise.all([res1.data, res2.data]);
+                }
+                throw Error(res1.statusText, res2.statusText);
+            }).then(([weather_data, forecast_data]) => {
 
             const months = ['January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'Nocvember', 'December',
